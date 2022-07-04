@@ -8,11 +8,11 @@ const {
 
 
 // The `/api/products` endpoint
-// get all products
-router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
-  Product.findAll({
+
+// find all products
+// be sure to include its associated Category and Tag data
+router.get('/', async (req, res) => {
+  await Product.findAll({
       include: [{
           model: Category,
           attributes: ['id', 'category_name']
@@ -31,11 +31,10 @@ router.get('/', (req, res) => {
 });
 
 
-// get one product
-router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
-  Product.findOne({
+// find a single product by its `id`
+// be sure to include its associated Category and Tag data
+router.get('/:id', async (req, res) => {
+  await Product.findOne({
       where: {
         id: req.params.id
       },
@@ -66,12 +65,12 @@ router.get('/:id', (req, res) => {
 
 
 // create new product
-router.post('/', (req, res) => {
-  Product.create({
+router.post('/', async (req, res) => {
+  await Product.create({
       product_name: req.body.product_name,
       price: req.body.price,
       stock: req.body.stock,
-      //category_id: req.body.category_id,
+      category_id: req.body.category_id,
       tagIds: req.body.tag_id
     })
     /* req.body looks like this...
@@ -104,10 +103,9 @@ router.post('/', (req, res) => {
 });
 
 
-// update product
-router.put('/:id', (req, res) => {
-  // update product data
-  Product.update(req.body, {
+// update product data
+router.put('/:id', async (req, res) => {
+  await Product.update(req.body, {
       where: {
         id: req.params.id,
       },
@@ -161,9 +159,9 @@ router.put('/:id', (req, res) => {
 });
 
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
-  Product.destroy({
+// delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  await Product.destroy({
       where: {
         id: req.params.id
       }
